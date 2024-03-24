@@ -11,9 +11,9 @@ export const Content = styled.View`
 
 export const Title = styled.Text`
   ${({ theme }) => css`
-  font-size: ${theme.FONT_SIZE.MD}px;
-  color: ${theme.COLORS.GRAY_100};
-  font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-size: ${theme.FONT_SIZE.MD}px;
+    color: ${theme.COLORS.GRAY_100};
+    font-family: ${theme.FONT_FAMILY.REGULAR};
   `}
   margin-top: 40px;
   margin-bottom: 8px;

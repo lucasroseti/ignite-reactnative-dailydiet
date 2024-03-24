@@ -1,14 +1,21 @@
-import { Container, Logo, User } from './styles'
+import { BackButton, BackIcon, Container, Title, TitleSection } from './styles'
 
-import logoImg from '@assets/logo.png'
-import userImg from '@assets/user.png'
+interface HeaderProps {
+  showTitle?: boolean
+}
 
-export function Header() {
+export function Header({ showTitle = false }: HeaderProps) {
   return (
     <Container>
-      <Logo source={logoImg} />
+      <BackButton>
+        <BackIcon type="PRIMARY" />
+      </BackButton>
 
-      <User source={userImg} />
+      {showTitle && (
+        <TitleSection>
+          <Title>New meal</Title>
+        </TitleSection>
+      )}
     </Container>
   )
 }

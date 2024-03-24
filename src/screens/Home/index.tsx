@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SectionList, View } from 'react-native'
 
 import { Button } from '@components/Button'
-import { Header } from '@components/Header'
+import { HeaderUser } from '@components/HeaderUser'
 import { ListEmpty } from '@components/ListEmpty'
 import { MealCard } from '@components/MealCard'
 import { Percent } from '@components/Percent'
@@ -16,7 +16,7 @@ export function Home() {
 
   return (
     <Container>
-      <Header />
+      <HeaderUser />
 
       <Content>
         <SectionList
