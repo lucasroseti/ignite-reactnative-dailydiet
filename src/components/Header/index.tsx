@@ -1,14 +1,15 @@
-import { BackButton, BackIcon, Container, Title, TitleSection } from './styles'
+import { BackButton, BackIcon, Container, IconTypeStyleProps, Title, TitleSection } from './styles'
 
 interface HeaderProps {
+  type?: IconTypeStyleProps
   showTitle?: boolean
 }
 
-export function Header({ showTitle = false }: HeaderProps) {
+export function Header({ showTitle = false, type = 'DEFAULT' }: HeaderProps) {
   return (
     <Container>
       <BackButton>
-        <BackIcon type="PRIMARY" />
+        <BackIcon type={type} />
       </BackButton>
 
       {showTitle && (
