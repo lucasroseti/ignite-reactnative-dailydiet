@@ -27,8 +27,8 @@ export function Meal() {
         <TagDiet title={isDiet ? 'within the diet' : 'off the diet'} type={isDiet ? 'PRIMARY' : 'SECONDARY'} />
 
         <View style={{ flex: 1,justifyContent: 'flex-end',  gap: 8 }}>
-          <Button title="Edit meal" />
-          <Button title="Delete meal" />
+          <Button icon="edit" title="Edit meal" />
+          <Button icon="delete-outline" title="Delete meal" type="SECONDARY" />
         </View>
       </Content>
     </Container>
