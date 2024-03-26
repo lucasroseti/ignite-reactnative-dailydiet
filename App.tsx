@@ -7,7 +7,8 @@ import { Loading } from '@components/Loading'
 // import { Home } from './src/screens/Home'
 // import { Statistics } from '@screens/Statistics'
 // import { NewMeal } from '@screens/NewMeal'
-import { Feedback } from '@screens/Feedback'
+// import { Feedback } from '@screens/Feedback'
+import { Meal } from '@screens/Meal'
 import theme from 'src/theme'
 
 export default function App() {
@@ -21,7 +22,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Feedback /> : <Loading />}
+      {fontsLoaded ? <Meal /> : <Loading />}
     </ThemeProvider>
   )
 }

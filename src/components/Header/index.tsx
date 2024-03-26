@@ -1,11 +1,12 @@
 import { BackButton, BackIcon, Container, IconTypeStyleProps, Title, TitleSection } from './styles'
 
 interface HeaderProps {
+  title?: string
   type?: IconTypeStyleProps
   showTitle?: boolean
 }
 
-export function Header({ showTitle = false, type = 'DEFAULT' }: HeaderProps) {
+export function Header({ title = '', showTitle = false, type = 'DEFAULT' }: HeaderProps) {
   return (
     <Container>
       <BackButton>
@@ -14,7 +15,7 @@ export function Header({ showTitle = false, type = 'DEFAULT' }: HeaderProps) {
 
       {showTitle && (
         <TitleSection>
-          <Title>New meal</Title>
+          <Title>{title}</Title>
         </TitleSection>
       )}
     </Container>

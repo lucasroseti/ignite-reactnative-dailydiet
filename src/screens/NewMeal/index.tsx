@@ -18,7 +18,7 @@ export function NewMeal() {
 
   return (
     <Container>
-      <Header showTitle />
+      <Header title="New meal" showTitle />
 
       <Content>
         <Form>
