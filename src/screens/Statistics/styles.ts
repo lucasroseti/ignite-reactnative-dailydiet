@@ -1,3 +1,4 @@
+import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { css } from 'styled-components/native'
 
 export type ContainerTypeStyleProps = 'PRIMARY' | 'SECONDARY'
@@ -6,7 +7,7 @@ type Props = {
   type: ContainerTypeStyleProps
 }
 
-export const Container = styled.View<Props>`
+export const Container = styled(SafeAreaView)<Props>`
   flex: 1;
   background-color: ${({ theme, type }) => 
     type === 'PRIMARY' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT };

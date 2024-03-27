@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 export type MealCardTypeStyleProps = 'SUCCESS' | 'DANGER'
@@ -6,7 +7,7 @@ type Props = {
   type: MealCardTypeStyleProps
 }
 
-export const Container = styled.View`
+export const Container = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

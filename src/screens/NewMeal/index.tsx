@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Text, View } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { Header } from '@components/Header'
 import { Input } from '@components/Input'
@@ -9,16 +9,32 @@ import { Button } from '@components/Button'
 import { ButtonDiet } from '@components/ButtonDiet'
 import { SmallInput } from '@components/SmallInput'
 
+interface RouteParams {
+  id?: string
+}
+
 export function NewMeal() {
   const [status, setStatus] = useState('')
+
+  const navigation = useNavigation()
+
+  const route = useRoute()
+  const params = route.params as RouteParams
+
+  const isNew = params === undefined
+  console.log(params)
 
   function handleButtonDiet(type = '') {
     setStatus(type)
   }
 
+  function handleNewMeal() {
+    navigation.navigate('feedback', { meal: false })
+  }
+
   return (
     <Container>
-      <Header title="New meal" showTitle />
+      <Header title={isNew ? 'New meal' : 'Edit meal'} showTitle />
 
       <Content>
         <Form>
@@ -94,7 +110,7 @@ export function NewMeal() {
           </GroupColumnField>
 
           <GroupColumnField style={{ flex: 1, justifyContent: 'flex-end' }}>
-            <Button title='Register meal'/>
+            <Button title={isNew ? 'Register meal' : 'Update meal'} onPress={handleNewMeal}/>
           </GroupColumnField>
         </Form>
       </Content>

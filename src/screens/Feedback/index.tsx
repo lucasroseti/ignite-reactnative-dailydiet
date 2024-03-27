@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Text, View } from 'react-native'
 import { useTheme } from 'styled-components'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { Button } from '@components/Button'
 import { Container, Image, SubTitle, Title } from './styles'
@@ -8,9 +9,21 @@ import { Container, Image, SubTitle, Title } from './styles'
 import womanImage from '@assets/woman.png'
 import manImage from '@assets/man.png'
 
+interface RouteParams {
+  meal: boolean
+}
+
 export function Feedback() {
-  const [isDiet, setIsDiet] = useState(false)
   const { FONT_FAMILY } = useTheme()
+
+  const navigation = useNavigation()
+
+  const route = useRoute()
+  const { meal: isDiet } = route.params as RouteParams
+
+  function handleHome() {
+    navigation.navigate('home')
+  }
 
   return (
     <Container>
@@ -26,7 +39,7 @@ export function Feedback() {
       <Image source={isDiet ? womanImage : manImage} />
 
       <View style={{ width: '100%', maxWidth: 191 }}>
-        <Button title="Ir para a página inicial" />
+        <Button title="Ir para a página inicial" onPress={handleHome} />
       </View>
     </Container>
   )
