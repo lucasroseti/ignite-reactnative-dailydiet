@@ -1,22 +1,29 @@
 import { useNavigation } from '@react-navigation/native'
 import { Container, Divide, MealText, Status, TimeText, Title } from './styles'
 
-export function MealCard() {
+interface MealCardProps {
+  id: string
+  name: string
+  time: string
+  isDiet: boolean
+}
+
+export function MealCard({ id, name, time, isDiet }: MealCardProps) {
   const navigation = useNavigation()
 
   function handleMeal() {
-    navigation.navigate('meal', { id: '1' })
+    navigation.navigate('meal', { id })
   }
 
   return (
     <Container onPress={handleMeal}>
       <Title>
-        <TimeText>20:00</TimeText>
+        <TimeText>{time}</TimeText>
         <Divide />
-        <MealText>X-tudo</MealText>
+        <MealText>{name}</MealText>
       </Title>
 
-      <Status type="SUCCESS" />
+      <Status type={isDiet ? 'SUCCESS' : 'DANGER'} />
     </Container>
   )
 }
