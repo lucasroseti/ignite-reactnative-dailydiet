@@ -1,5 +1,3 @@
-import * as Crypto from 'expo-crypto'
-
 export type MealStorageDTO = {
   id: string
   name: string
@@ -10,7 +8,7 @@ export type MealStorageDTO = {
 }
 
 export const MealDataDTO = {
-  id: Crypto.randomUUID(),
+  id: '',
   name: '',
   description: '',
   date: '',

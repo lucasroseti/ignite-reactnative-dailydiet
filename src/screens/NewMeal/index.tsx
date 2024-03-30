@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Alert } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import * as Crypto from 'expo-crypto'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 
 import { Button } from '@components/Button'
 import { ButtonDiet } from '@components/ButtonDiet'
@@ -8,13 +9,17 @@ import { Header } from '@components/Header'
 import { Input } from '@components/Input'
 import { SmallInput } from '@components/SmallInput'
 
-import { Container, Content, DateText, Form, GroupColumnField, GroupDateField, GroupRowField, Label } from './styles'
 import { MealStorageDTO, MealDataDTO } from '@storage/meal/MealStorageDTO'
 import { MealDateDataDTO, MealDateStorageDTO } from '@storage/meal/MealDateStorageDTO'
 import { daylistCreate } from '@storage/daylist/daylistCreate'
+import { daylistUpdate } from '@storage/daylist/daylistUpdate'
+import { mealGetByIdAnDayListId } from '@storage/meal/mealGetByIdAnDayListId'
+
+import { Container, Content, DateText, Form, GroupColumnField, GroupDateField, GroupRowField, Label } from './styles'
 
 interface RouteParams {
   id?: string
+  daylistId?: string
 }
 
 export function NewMeal() {
@@ -29,6 +34,33 @@ export function NewMeal() {
 
   const isNew = params === undefined
 
+  async function fetchMealById() {
+    try {
+      const { id, daylistId } = params
+
+      const data = await mealGetByIdAnDayListId(id!, daylistId!)
+      setNewMeal(data)
+      setStatus(data.isDiet ? 'PRIMARY' : 'SECONDARY')
+      formatDateAndTimeToForm(data.date, data.time)
+    } catch (error) {
+      Alert.alert('Meal', 'Unable to load meal')
+      console.log(error)
+    }
+  }
+
+  function formatDateAndTimeToForm(date: string, time: string) {
+    const [year, month, day] = date.split('-')
+    const [hour, minute] = time.split(':')
+
+    setDate({
+      day,
+      year,
+      month,
+      hour,
+      minute
+    })
+  }
+
   function handleButtonDiet(type = '') {
     const isDiet = type === 'PRIMARY'
     setNewMeal((prevState) => ({ ...prevState, isDiet }))
@@ -36,11 +68,22 @@ export function NewMeal() {
   }
 
   function handleData(name: string, value: string) {
-    setNewMeal((prevState) => ({ ...prevState, [name]: value.trim() }))
+    setNewMeal((prevState) => ({ ...prevState, [name]: value }))
   }
 
   function handleDataDate(name: string, value: string) {
     setDate((prevState) => ({ ...prevState, [name]: value.trim() }))
+  }
+
+  async function handleEditMeal() {
+    if (newMeal.date === '') {
+      return Alert.alert('New meal', 'Enter a valid date')
+    }
+
+    const { daylistId } = params
+
+    await daylistUpdate(daylistId!, newMeal)
+    navigation.navigate('feedback', { meal: newMeal.isDiet })
   }
 
   function handleNewMealMinute() {
@@ -60,9 +103,13 @@ export function NewMeal() {
       return Alert.alert('New meal', 'Enter a valid date')
     }
 
-    await daylistCreate(newMeal)
+    await daylistCreate({...newMeal, id: Crypto.randomUUID() })
     navigation.navigate('feedback', { meal: newMeal.isDiet })
   }
+
+  useFocusEffect(useCallback(() => {
+    if (!isNew) fetchMealById()
+  }, [isNew]))
 
   return (
     <Container>
@@ -72,7 +119,7 @@ export function NewMeal() {
         <Form>
           <GroupColumnField>
             <Label>Name</Label>
-            <Input onChangeText={e => handleData('name', e)} />
+            <Input value={newMeal.name} onChangeText={e => handleData('name', e)} />
           </GroupColumnField>
 
           <GroupColumnField>
@@ -81,6 +128,7 @@ export function NewMeal() {
               height='120'
               multiline
               numberOfLines={4}
+              value={newMeal.description} 
               onChangeText={e => handleData('description', e)}
             />
           </GroupColumnField>
@@ -93,6 +141,7 @@ export function NewMeal() {
                   maxLength={2}
                   keyboardType="numeric"
                   textAlign='center'
+                  value={date.day}
                   onChangeText={e => handleDataDate('day', e)}
                 />
                 <DateText>/</DateText>
@@ -100,6 +149,7 @@ export function NewMeal() {
                   maxLength={2}
                   keyboardType="numeric"
                   textAlign='center'
+                  value={date.month}
                   onChangeText={e => handleDataDate('month', e)}
                 />
                 <DateText>/</DateText>
@@ -107,6 +157,7 @@ export function NewMeal() {
                   maxLength={4}
                   keyboardType="numeric"
                   textAlign='center'
+                  value={date.year}
                   onChangeText={e => handleDataDate('year', e)}
                 />
               </GroupDateField>
@@ -117,12 +168,14 @@ export function NewMeal() {
                 <SmallInput
                   maxLength={2}
                   textAlign='center'
+                  value={date.hour}
                   onChangeText={e => handleDataDate('hour', e)}
                 />
                 <DateText>:</DateText>
                 <SmallInput
                   maxLength={2}
                   textAlign='center'
+                  value={date.minute}
                   onChangeText={e => handleDataDate('minute', e)}
                   onBlur={handleNewMealMinute}
                 />
@@ -149,7 +202,7 @@ export function NewMeal() {
           </GroupColumnField>
 
           <GroupColumnField style={{ flex: 1, justifyContent: 'flex-end' }}>
-            <Button title={isNew ? 'Register meal' : 'Update meal'} onPress={handleNewMeal}/>
+            <Button title={isNew ? 'Register meal' : 'Update meal'} onPress={isNew ? handleNewMeal : handleEditMeal}/>
           </GroupColumnField>
         </Form>
       </Content>

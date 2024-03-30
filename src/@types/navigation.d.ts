@@ -7,8 +7,9 @@ export declare global {
       home: undefined
       meal: {
         id: string
+        daylistId: string
       }
-      'new-meal': { id: string } | undefined
+      'new-meal': { id: string, daylistId: string } | undefined
       statistics: undefined
     }
   }

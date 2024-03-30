@@ -53,8 +53,9 @@ export function Home() {
             sections={dayList}
             keyExtractor={(item) => item.name}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => <MealCard
+            renderItem={({ item, section }) => <MealCard
               id={item.id}
+              daylistId={section.id}
               name={item.name}
               time={item.time}
               isDiet={item.isDiet}

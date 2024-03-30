@@ -8,7 +8,7 @@ import { daylistGetAll } from './daylistGetAll'
 import { daylistGetByDate } from './daylistGetByDate'
 import { DaylistStorageDTO } from './DaylistStorageDTO'
 
-export async function daylistCreate(newDayList: MealStorageDTO) {
+export async function daylistCreate(newMeal: MealStorageDTO) {
   try {
     let daylistNewFormat: DaylistStorageDTO = {
       id: Crypto.randomUUID(),
@@ -17,14 +17,14 @@ export async function daylistCreate(newDayList: MealStorageDTO) {
     }
 
     const storedDaylists = await daylistGetAll()
-    const daylistAlreadyExist = await daylistGetByDate(newDayList.date)
+    const daylistAlreadyExist = await daylistGetByDate(newMeal.date)
 
     if (daylistAlreadyExist) {
-      daylistAlreadyExist.data.push(newDayList)
+      daylistAlreadyExist.data.push(newMeal)
       daylistNewFormat = daylistAlreadyExist
     } else {
-      daylistNewFormat.title = newDayList.date
-      daylistNewFormat.data = [newDayList]
+      daylistNewFormat.title = newMeal.date
+      daylistNewFormat.data = [newMeal]
     }
     
     const storedDaylistsWithoutSearched = storedDaylists.filter(daylist => daylist.id !== daylistNewFormat.id)
