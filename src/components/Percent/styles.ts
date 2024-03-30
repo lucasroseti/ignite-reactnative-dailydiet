@@ -1,8 +1,12 @@
 import { ArrowUpRight } from 'phosphor-react-native'
 import styled from 'styled-components/native'
 
-export const Container = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.COLORS.GREEN_LIGHT };
+interface Props {
+  type: boolean
+}
+
+export const Container = styled.TouchableOpacity<Props>`
+  background-color: ${({ theme, type }) => type ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT };
   border-radius: 8px;
 `
 

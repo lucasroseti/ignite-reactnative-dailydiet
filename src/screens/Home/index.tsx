@@ -9,9 +9,10 @@ import { Loading } from '@components/Loading'
 import { MealCard } from '@components/MealCard'
 import { Percent } from '@components/Percent'
 
-import { Container, Content, DateTitle, Title } from './styles'
 import { DaylistStorageDTO } from '@storage/daylist/DaylistStorageDTO'
 import { daylistGetAll } from '@storage/daylist/daylistGetAll'
+
+import { Container, Content, DateTitle, Title } from './styles'
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true)
